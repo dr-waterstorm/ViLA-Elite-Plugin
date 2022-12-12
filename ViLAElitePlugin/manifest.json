@@ -1,0 +1,5 @@
+{
+    "entrypoint": "ViLAElitePlugin.dll",
+    "version": "1.0.0",
+    "releases": "https://api.github.com/repos/dr-waterstorm/ViLA-Elite-Plugin/releases"
+}
