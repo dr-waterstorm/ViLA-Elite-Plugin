@@ -1,4 +1,4 @@
 public class PluginConfiguration
 {
-    // No config options yet
+    public string StatusLocation { get; set; } = "%userprofile%/Saved Games/Frontier Developments/Elite Dangerous/";
 }

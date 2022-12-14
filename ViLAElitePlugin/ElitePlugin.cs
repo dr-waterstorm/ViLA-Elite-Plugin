@@ -1,7 +1,3 @@
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ViLA.PluginBase;
@@ -11,15 +7,21 @@ public class ElitePlugin : PluginBase, IDisposable
     public const string ConfigPath = "Plugins/ViLAElitePlugin/config.json";
 
     private Task _thread = null!;
+    ILogger<ElitePlugin> ?_logger;
+    IFileWatcher ?_watcher;
 
     public override async Task<bool> Start()
     {
-        var log = LoggerFactory.CreateLogger<ElitePlugin>();
-        log.LogInformation("Starting Elite plugin...");
+        _logger = LoggerFactory.CreateLogger<ElitePlugin>();
+        _logger.LogInformation("Starting Elite plugin...");
 
-        var cfg = await GetConfiguration();
+        var pluginConfig = await GetConfiguration();
 
-        _thread = Task.Run(() => TestInit(), default);
+        _logger.LogInformation("Status.json Path: " + pluginConfig.StatusLocation);
+
+        _watcher = new FileWatcher(LoggerFactory, pluginConfig.StatusLocation);
+
+        _thread = Task.Run(() => initElitePlugin(default), default);
         return true;
     }
 
@@ -43,15 +45,20 @@ public class ElitePlugin : PluginBase, IDisposable
         return pluginConfig;
     }
 
-    private void TestInit()
-    {
-        var log = LoggerFactory.CreateLogger<ElitePlugin>();
-        log.LogInformation("Init...");
-    }
-
     public void Dispose()
     {
         GC.SuppressFinalize(this);
         _thread.Dispose();
+    }
+
+    private void initElitePlugin(CancellationToken ct)
+    {
+        if (_watcher != null) {
+            _watcher.Start();
+            while (!ct.IsCancellationRequested)
+            {
+
+            }
+        }
     }
 }
