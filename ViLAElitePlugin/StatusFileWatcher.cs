@@ -42,7 +42,6 @@ public class StatusFileWatcher : IStatusFileWatcher, IDisposable
 
     private void OnChanged(object source, FileSystemEventArgs e)
     {
-        _logger.LogInformation("Changed:" +  e.FullPath + " " + e.ChangeType);
         Task.Run(() => this.ParseFile(e.FullPath));
     }
 
@@ -57,17 +56,12 @@ public class StatusFileWatcher : IStatusFileWatcher, IDisposable
             return;
         }
 
-        _logger.LogInformation($"Start reading {path}");
-
         try
         {
             var statusFile = await File.ReadAllTextAsync(path);
             EliteStatusFile eliteStatusFile = JsonConvert.DeserializeObject<EliteStatusFile>(statusFile) ?? throw new JsonSerializationException("Result was null");
             
             eliteStatusFile.parseRawFlags();
-            _logger.LogInformation("Finished reading");
-            _logger.LogInformation($"Flags: {eliteStatusFile.Flags}");
-
             eliteStatusFile.updateAllIntProperties(_translator);
         }
         catch (IOException)

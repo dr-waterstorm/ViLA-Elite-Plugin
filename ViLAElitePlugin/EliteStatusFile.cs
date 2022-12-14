@@ -15,7 +15,7 @@ public class EliteStatusFile
     public int? Altitude { get; set; } = 0;
 
     // Calculated values
-    public int? FlagsValid { get; set; } = 0;
+    public bool FlagsValid { get; set; } = false;
     public int? Docked { get; set; } = 0;
     public int? Landed { get; set; } = 0;
     public int? LandingGearDown { get; set; } = 0;
@@ -87,7 +87,7 @@ public class EliteStatusFile
         var ED_FSDJump = 0x40000000;
         var ED_SRVHighBeam = 0x80000000;
 
-        this.FlagsValid = (this.Flags != 0 ? 1 : 0);
+        this.FlagsValid = (this.Flags != 0);
         this.Docked = (this.Flags & ED_Docked) != 0 ? 1 : 0;
         this.Landed = (this.Flags & ED_Landed) != 0 ? 1 : 0;
         this.LandingGearDown = (this.Flags & ED_LandingGearDown) != 0 ? 1 : 0;
@@ -124,13 +124,17 @@ public class EliteStatusFile
 
     public void updateAllIntProperties (IStatusTranslator statusTranslator)
     {
-        PropertyInfo[] properties = typeof(EliteStatusFile).GetProperties();
-        foreach (PropertyInfo property in properties)
+        // only update if the game is running
+        if (this.FlagsValid)
         {
-            // currently simply use all the ints available
-            if (property.PropertyType == typeof(int?))
+            PropertyInfo[] properties = typeof(EliteStatusFile).GetProperties();
+            foreach (PropertyInfo property in properties)
             {
-                statusTranslator.FromStatusFile(property.Name, property.GetValue(this, null));
+                // currently simply use all the ints available
+                if (property.PropertyType == typeof(int?))
+                {
+                    statusTranslator.FromStatusFile(property.Name, property.GetValue(this, null));
+                }
             }
         }
     }
