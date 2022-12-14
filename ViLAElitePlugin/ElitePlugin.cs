@@ -9,27 +9,6 @@ public class ElitePlugin : PluginBase, IDisposable
     private Task _thread = null!;
     ILogger<ElitePlugin> ?_logger;
     IFileWatcher ?_watcher;
-
-    public override async Task<bool> Start()
-    {
-        _logger = LoggerFactory.CreateLogger<ElitePlugin>();
-        _logger.LogInformation("Starting Elite plugin...");
-
-        var pluginConfig = await GetConfiguration();
-
-        _logger.LogInformation("Status.json Path: " + pluginConfig.StatusLocation);
-
-        _watcher = new FileWatcher(LoggerFactory, pluginConfig.StatusLocation);
-
-        _thread = Task.Run(() => initElitePlugin(default), default);
-        return true;
-    }
-
-    public override Task Stop()
-    {
-        Dispose();
-        return Task.CompletedTask;
-    }
     
     private static async Task<PluginConfiguration> GetConfiguration()
     {
@@ -45,10 +24,19 @@ public class ElitePlugin : PluginBase, IDisposable
         return pluginConfig;
     }
 
-    public void Dispose()
+    public override async Task<bool> Start()
     {
-        GC.SuppressFinalize(this);
-        _thread.Dispose();
+        _logger = LoggerFactory.CreateLogger<ElitePlugin>();
+        _logger.LogInformation("Starting Elite plugin...");
+
+        var pluginConfig = await GetConfiguration();
+
+        _logger.LogInformation("Status.json Path: " + pluginConfig.StatusLocation);
+
+        _watcher = new FileWatcher(LoggerFactory.CreateLogger<FileWatcher>(), pluginConfig.StatusLocation);
+
+        _thread = Task.Run(() => initElitePlugin(default), default);
+        return true;
     }
 
     private void initElitePlugin(CancellationToken ct)
@@ -60,5 +48,17 @@ public class ElitePlugin : PluginBase, IDisposable
 
             }
         }
+    }
+
+    public override Task Stop()
+    {
+        Dispose();
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        _thread.Dispose();
     }
 }

@@ -1,19 +1,20 @@
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-public class FileWatcher : IFileWatcher
+public class FileWatcher : IFileWatcher, IDisposable
 {
     FileSystemWatcher _fileSystemWatcher;
-    FileParser _fileParser;
     ILogger<FileWatcher> _logger;
     string _path;
 
-    public FileWatcher(ILoggerFactory iLoggerFactory, string path)
+    public FileWatcher(ILogger<FileWatcher> logger, string path)
     {
-        _logger = iLoggerFactory.CreateLogger<FileWatcher>();
+        _logger = logger;
         _path = Environment.ExpandEnvironmentVariables(path);
 
         _fileSystemWatcher = new FileSystemWatcher(_path, "Status.json");
-        _fileParser = new FileParser(iLoggerFactory);
+        // _fileParser = new FileParser();
+        Task.Run(() => this.ParseFile(_path + "Status.json"));
     }
 
     public void Start()
@@ -27,9 +28,17 @@ public class FileWatcher : IFileWatcher
 
 
         _fileSystemWatcher.EnableRaisingEvents = true;
-        _fileSystemWatcher.IncludeSubdirectories = true;
 
         _logger.LogInformation("Actively watching Status.json for changes ...");
+    }
+
+    public void Stop ()
+    {
+        _fileSystemWatcher.Changed -= _fileSystemWatcher_Changed;
+        _fileSystemWatcher.Error -= _fileSystemWatcher_Error;
+
+    
+        _fileSystemWatcher.EnableRaisingEvents = false;
     }
 
     private void _fileSystemWatcher_Error(object source, ErrorEventArgs e)
@@ -40,6 +49,28 @@ public class FileWatcher : IFileWatcher
     private void _fileSystemWatcher_Changed(object source, FileSystemEventArgs e)
     {
         _logger.LogInformation("Changed:" +  e.FullPath + " " + e.ChangeType);
-        Task.Run(() => _fileParser.ParseFile(e.FullPath));
+        Task.Run(() => this.ParseFile(e.FullPath));
+    }
+
+    public async Task ParseFile(string path)
+    {
+        if(!File.Exists(path))
+        {
+            _logger.LogError($"File does not exist {path}");
+            return;
+        }
+
+        _logger.LogInformation($"Start reading {path}");
+
+        var statusFile = await File.ReadAllTextAsync(path);
+        EliteStatusFile eliteStatusFile = JsonConvert.DeserializeObject<EliteStatusFile>(statusFile) ?? throw new JsonSerializationException("Result was null");
+
+        _logger.LogInformation("Finished reading");
+        _logger.LogInformation($"Flags: {eliteStatusFile.Flags}");
+    }
+
+    public void Dispose()
+    {
+        _fileSystemWatcher.Dispose();
     }
 }
