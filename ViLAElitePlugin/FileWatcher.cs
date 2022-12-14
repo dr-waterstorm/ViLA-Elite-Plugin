@@ -67,6 +67,7 @@ public class FileWatcher : IFileWatcher, IDisposable
 
         _logger.LogInformation("Finished reading");
         _logger.LogInformation($"Flags: {eliteStatusFile.Flags}");
+        eliteStatusFile.parseRawFlags();
     }
 
     public void Dispose()
