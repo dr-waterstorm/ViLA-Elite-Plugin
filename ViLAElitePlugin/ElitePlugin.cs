@@ -8,7 +8,7 @@ public class ElitePlugin : PluginBase, IDisposable
 
     private Task _thread = null!;
     ILogger<ElitePlugin> ?_logger;
-    IFileWatcher ?_watcher;
+    IStatusFileWatcher ?_watcher;
     
     private static async Task<PluginConfiguration> GetConfiguration()
     {
@@ -33,7 +33,7 @@ public class ElitePlugin : PluginBase, IDisposable
 
         _logger.LogInformation("Status.json Path: " + pluginConfig.StatusLocation);
 
-        _watcher = new FileWatcher(LoggerFactory.CreateLogger<FileWatcher>(), pluginConfig.StatusLocation);
+        _watcher = new StatusFileWatcher(LoggerFactory.CreateLogger<StatusFileWatcher>(), pluginConfig.StatusLocation, new Translator(LoggerFactory.CreateLogger<Translator>(), Send, this.ClearState));
 
         _thread = Task.Run(() => initElitePlugin(default), default);
         return true;

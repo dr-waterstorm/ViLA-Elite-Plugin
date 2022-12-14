@@ -1,3 +1,27 @@
 {
-    "$schema": "https://raw.githubusercontent.com/charliefoxtwo/ViLA/develop/Configuration/Schema/ActionConfiguration.json.schema"
+    "$schema": "https://raw.githubusercontent.com/charliefoxtwo/ViLA/develop/Configuration/Schema/ActionConfiguration.json.schema",
+    "devices": {
+        "025B": {
+            "OnBoard": {
+                "6": [
+                    {
+                        "color": "000000",
+                        "trigger": {
+                            "id": "ShieldsUp",
+                            "value": 0,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "000080",
+                        "trigger": {
+                            "id": "ShieldsUp",
+                            "value": 1,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ]
+            }
+        }
+    }
 }
