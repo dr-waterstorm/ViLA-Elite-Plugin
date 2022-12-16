@@ -62,6 +62,7 @@ public class StatusFileWatcher : IStatusFileWatcher, IDisposable
             EliteStatusFile eliteStatusFile = JsonConvert.DeserializeObject<EliteStatusFile>(statusFile) ?? throw new JsonSerializationException("Result was null");
             
             eliteStatusFile.parseRawFlags();
+            eliteStatusFile.parseVariables();
             eliteStatusFile.updateAllIntProperties(_translator);
         }
         catch (IOException)

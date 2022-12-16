@@ -14,8 +14,10 @@ public class EliteStatusFile
     public int? Heading { get; set; } = 0;
     public int? Altitude { get; set; } = 0;
 
-    // Calculated values
+    // Calculated / expose values
     public bool ExposedGameStarted { get; set; } = false;
+
+    // Flags
     public bool? ExposedDocked { get; set; } = false;
     public bool? ExposedLanded { get; set; } = false;
     public bool? ExposedLandingGearDown { get; set; } = false;
@@ -48,6 +50,12 @@ public class EliteStatusFile
     public bool? ExposedAltitudeFromAverageRadius { get; set; } = false;
     public bool? ExposedFSDJump { get; set; } = false;
     public bool? ExposedSRVHighBeam { get; set; } = false;
+
+    // Other
+
+    public int? ExposedSysPips { get; set; } = 0;
+    public int? ExposedEngPips { get; set; } = 0;
+    public int? ExposedWepPips { get; set; } = 0;
 
     public void parseRawFlags () {
         var ED_Docked = 0x00000001;
@@ -120,6 +128,15 @@ public class EliteStatusFile
         this.ExposedAltitudeFromAverageRadius = (this.Flags & ED_AltitudeFromAverageRadius) != 0 ? true : false;
         this.ExposedFSDJump = (this.Flags & ED_FSDJump) != 0 ? true : false;
         this.ExposedSRVHighBeam = (this.Flags & ED_SRVHighBeam) != 0 ? true : false;
+    }
+
+    public void parseVariables ()
+    {
+        if (this.Pips != null && this.Pips.Count == 3) {
+            this.ExposedSysPips = this.Pips[0];
+            this.ExposedEngPips = this.Pips[1];
+            this.ExposedWepPips = this.Pips[2];
+        }
     }
 
     public void updateAllIntProperties (IStatusTranslator statusTranslator)
