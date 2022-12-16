@@ -5,10 +5,10 @@
             "OnBoard": {
                 "6": [
                     {
-                        "color": "ff0000",
+                        "color": "000000",
                         "trigger": {
                             "id": "ShieldsUp",
-                            "value": 0,
+                            "value": false,
                             "comparator": "EqualTo"
                         }
                     },
@@ -16,7 +16,7 @@
                         "color": "000080",
                         "trigger": {
                             "id": "ShieldsUp",
-                            "value": 1,
+                            "value": true,
                             "comparator": "EqualTo"
                         }
                     }

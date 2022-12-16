@@ -15,39 +15,39 @@ public class EliteStatusFile
     public int? Altitude { get; set; } = 0;
 
     // Calculated values
-    public bool FlagsValid { get; set; } = false;
-    public int? Docked { get; set; } = 0;
-    public int? Landed { get; set; } = 0;
-    public int? LandingGearDown { get; set; } = 0;
-    public int? ShieldsUp { get; set; } = 0;
-    public int? Supercruise { get; set; } = 0;
-    public int? FlightAssistOff { get; set; } = 0;
-    public int? HardpointsDeployed { get; set; } = 0;
-    public int? InWing { get; set; } = 0;
-    public int? LightsOn { get; set; } = 0;
-    public int? CargoScoopDeployed { get; set; } = 0;
-    public int? SilentRunning { get; set; } = 0;
-    public int? ScoopingFuel { get; set; } = 0;
-    public int? SRVHandbrake { get; set; } = 0;
-    public int? SRVTurret { get; set; } = 0;
-    public int? SRVTurretRetracted { get; set; } = 0;
-    public int? SRVDriveAssist { get; set; } = 0;
-    public int? FSDMassLocked { get; set; } = 0;
-    public int? FSDCharging { get; set; } = 0;
-    public int? FSDCooldown { get; set; } = 0;
-    public int? LowFuel { get; set; } = 0;
-    public int? OverHeating { get; set; } = 0;
-    public int? HasLatLong { get; set; } = 0;
-    public int? IsInDanger { get; set; } = 0;
-    public int? BeingInterdicted { get; set; } = 0;
-    public int? InMainShip { get; set; } = 0;
-    public int? InFighter { get; set; } = 0;
-    public int? InSRV { get; set; } = 0;
-    public int? HudInAnalysisMode { get; set; } = 0;
-    public int? NightVision { get; set; } = 0;
-    public int? AltitudeFromAverageRadius { get; set; } = 0;
-    public int? FSDJump { get; set; } = 0;
-    public int? SRVHighBeam { get; set; } = 0;
+    public bool ExposedGameStarted { get; set; } = false;
+    public bool? ExposedDocked { get; set; } = false;
+    public bool? ExposedLanded { get; set; } = false;
+    public bool? ExposedLandingGearDown { get; set; } = false;
+    public bool? ExposedShieldsUp { get; set; } = false;
+    public bool? ExposedSupercruise { get; set; } = false;
+    public bool? ExposedFlightAssistOff { get; set; } = false;
+    public bool? ExposedHardpointsDeployed { get; set; } = false;
+    public bool? ExposedInWing { get; set; } = false;
+    public bool? ExposedLightsOn { get; set; } = false;
+    public bool? ExposedCargoScoopDeployed { get; set; } = false;
+    public bool? ExposedSilentRunning { get; set; } = false;
+    public bool? ExposedScoopingFuel { get; set; } = false;
+    public bool? ExposedSRVHandbrake { get; set; } = false;
+    public bool? ExposedSRVTurret { get; set; } = false;
+    public bool? ExposedSRVTurretRetracted { get; set; } = false;
+    public bool? ExposedSRVDriveAssist { get; set; } = false;
+    public bool? ExposedFSDMassLocked { get; set; } = false;
+    public bool? ExposedFSDCharging { get; set; } = false;
+    public bool? ExposedFSDCooldown { get; set; } = false;
+    public bool? ExposedLowFuel { get; set; } = false;
+    public bool? ExposedOverHeating { get; set; } = false;
+    public bool? ExposedHasLatLong { get; set; } = false;
+    public bool? ExposedIsInDanger { get; set; } = false;
+    public bool? ExposedBeingInterdicted { get; set; } = false;
+    public bool? ExposedInMainShip { get; set; } = false;
+    public bool? ExposedInFighter { get; set; } = false;
+    public bool? ExposedInSRV { get; set; } = false;
+    public bool? ExposedHudInAnalysisMode { get; set; } = false;
+    public bool? ExposedNightVision { get; set; } = false;
+    public bool? ExposedAltitudeFromAverageRadius { get; set; } = false;
+    public bool? ExposedFSDJump { get; set; } = false;
+    public bool? ExposedSRVHighBeam { get; set; } = false;
 
     public void parseRawFlags () {
         var ED_Docked = 0x00000001;
@@ -87,53 +87,53 @@ public class EliteStatusFile
         var ED_FSDJump = 0x40000000;
         var ED_SRVHighBeam = 0x80000000;
 
-        this.FlagsValid = (this.Flags != 0);
-        this.Docked = (this.Flags & ED_Docked) != 0 ? 1 : 0;
-        this.Landed = (this.Flags & ED_Landed) != 0 ? 1 : 0;
-        this.LandingGearDown = (this.Flags & ED_LandingGearDown) != 0 ? 1 : 0;
-        this.ShieldsUp = (this.Flags & ED_ShieldsUp) != 0 ? 1 : 0;
-        this.Supercruise = (this.Flags & ED_Supercruise) != 0 ? 1 : 0;
-        this.FlightAssistOff = (this.Flags & ED_FlightAssistOff) != 0 ? 1 : 0;
-        this.HardpointsDeployed = (this.Flags & ED_HardpointsDeployed) != 0 ? 1 : 0;
-        this.InWing = (this.Flags & ED_InWing) != 0 ? 1 : 0;
-        this.LightsOn = (this.Flags & ED_LightsOn) != 0 ? 1 : 0;
-        this.CargoScoopDeployed = (this.Flags & ED_CargoScoopDeployed) != 0 ? 1 : 0;
-        this.SilentRunning = (this.Flags & ED_SilentRunning) != 0 ? 1 : 0;
-        this.ScoopingFuel = (this.Flags & ED_ScoopingFuel) != 0 ? 1 : 0;
-        this.SRVHandbrake = (this.Flags & ED_SRVHandbrake) != 0 ? 1 : 0;
-        this.SRVTurret = (this.Flags & ED_SRVTurret) != 0 ? 1 : 0;
-        this.SRVTurretRetracted = (this.Flags & ED_SRVTurretRetracted) != 0 ? 1 : 0;
-        this.SRVDriveAssist = (this.Flags & ED_SRVDriveAssist) != 0 ? 1 : 0;
-        this.FSDMassLocked = (this.Flags & ED_FSDMassLocked) != 0 ? 1 : 0;
-        this.FSDCharging = (this.Flags & ED_FSDCharging) != 0 ? 1 : 0;
-        this.FSDCooldown = (this.Flags & ED_FSDCooldown) != 0 ? 1 : 0;
-        this.LowFuel = (this.Flags & ED_LowFuel) != 0 ? 1 : 0;
-        this.OverHeating = (this.Flags & ED_OverHeating) != 0 ? 1 : 0;
-        this.HasLatLong = (this.Flags & ED_HasLatLong) != 0 ? 1 : 0;
-        this.IsInDanger = (this.Flags & ED_IsInDanger) != 0 ? 1 : 0;
-        this.BeingInterdicted = (this.Flags & ED_BeingInterdicted) != 0 ? 1 : 0;
-        this.InMainShip = (this.Flags & ED_InMainShip) != 0 ? 1 : 0;
-        this.InFighter = (this.Flags & ED_InFighter) != 0 ? 1 : 0;
-        this.InSRV = (this.Flags & ED_InSRV) != 0 ? 1 : 0;
-        this.HudInAnalysisMode = (this.Flags & ED_HudInAnalysisMode) != 0 ? 1 : 0;
-        this.NightVision = (this.Flags & ED_NightVision) != 0 ? 1 : 0;
-        this.AltitudeFromAverageRadius = (this.Flags & ED_AltitudeFromAverageRadius) != 0 ? 1 : 0;
-        this.FSDJump = (this.Flags & ED_FSDJump) != 0 ? 1 : 0;
-        this.SRVHighBeam = (this.Flags & ED_SRVHighBeam) != 0 ? 1 : 0;
+        this.ExposedGameStarted = (this.Flags != 0);
+        this.ExposedDocked = (this.Flags & ED_Docked) != 0 ? true : false;
+        this.ExposedLanded = (this.Flags & ED_Landed) != 0 ? true : false;
+        this.ExposedLandingGearDown = (this.Flags & ED_LandingGearDown) != 0 ? true : false;
+        this.ExposedShieldsUp = (this.Flags & ED_ShieldsUp) != 0 ? true : false;
+        this.ExposedSupercruise = (this.Flags & ED_Supercruise) != 0 ? true : false;
+        this.ExposedFlightAssistOff = (this.Flags & ED_FlightAssistOff) != 0 ? true : false;
+        this.ExposedHardpointsDeployed = (this.Flags & ED_HardpointsDeployed) != 0 ? true : false;
+        this.ExposedInWing = (this.Flags & ED_InWing) != 0 ? true : false;
+        this.ExposedLightsOn = (this.Flags & ED_LightsOn) != 0 ? true : false;
+        this.ExposedCargoScoopDeployed = (this.Flags & ED_CargoScoopDeployed) != 0 ? true : false;
+        this.ExposedSilentRunning = (this.Flags & ED_SilentRunning) != 0 ? true : false;
+        this.ExposedScoopingFuel = (this.Flags & ED_ScoopingFuel) != 0 ? true : false;
+        this.ExposedSRVHandbrake = (this.Flags & ED_SRVHandbrake) != 0 ? true : false;
+        this.ExposedSRVTurret = (this.Flags & ED_SRVTurret) != 0 ? true : false;
+        this.ExposedSRVTurretRetracted = (this.Flags & ED_SRVTurretRetracted) != 0 ? true : false;
+        this.ExposedSRVDriveAssist = (this.Flags & ED_SRVDriveAssist) != 0 ? true : false;
+        this.ExposedFSDMassLocked = (this.Flags & ED_FSDMassLocked) != 0 ? true : false;
+        this.ExposedFSDCharging = (this.Flags & ED_FSDCharging) != 0 ? true : false;
+        this.ExposedFSDCooldown = (this.Flags & ED_FSDCooldown) != 0 ? true : false;
+        this.ExposedLowFuel = (this.Flags & ED_LowFuel) != 0 ? true : false;
+        this.ExposedOverHeating = (this.Flags & ED_OverHeating) != 0 ? true : false;
+        this.ExposedHasLatLong = (this.Flags & ED_HasLatLong) != 0 ? true : false;
+        this.ExposedIsInDanger = (this.Flags & ED_IsInDanger) != 0 ? true : false;
+        this.ExposedBeingInterdicted = (this.Flags & ED_BeingInterdicted) != 0 ? true : false;
+        this.ExposedInMainShip = (this.Flags & ED_InMainShip) != 0 ? true : false;
+        this.ExposedInFighter = (this.Flags & ED_InFighter) != 0 ? true : false;
+        this.ExposedInSRV = (this.Flags & ED_InSRV) != 0 ? true : false;
+        this.ExposedHudInAnalysisMode = (this.Flags & ED_HudInAnalysisMode) != 0 ? true : false;
+        this.ExposedNightVision = (this.Flags & ED_NightVision) != 0 ? true : false;
+        this.ExposedAltitudeFromAverageRadius = (this.Flags & ED_AltitudeFromAverageRadius) != 0 ? true : false;
+        this.ExposedFSDJump = (this.Flags & ED_FSDJump) != 0 ? true : false;
+        this.ExposedSRVHighBeam = (this.Flags & ED_SRVHighBeam) != 0 ? true : false;
     }
 
     public void updateAllIntProperties (IStatusTranslator statusTranslator)
     {
         // only update if the game is running
-        if (this.FlagsValid)
+        if (this.ExposedGameStarted)
         {
             PropertyInfo[] properties = typeof(EliteStatusFile).GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 // currently simply use all the ints available
-                if (property.PropertyType == typeof(int?))
+                if (property.Name.StartsWith("Exposed"))
                 {
-                    statusTranslator.FromStatusFile(property.Name, property.GetValue(this, null));
+                    statusTranslator.FromStatusFile(property.Name.Remove(0,7), property.GetValue(this, null));
                 }
             }
         }

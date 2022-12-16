@@ -5,10 +5,8 @@ using ViLA.PluginBase;
 public class ElitePlugin : PluginBase, IDisposable
 {
     public const string ConfigPath = "Plugins/ViLAElitePlugin/config.json";
-
-    private Task _thread = null!;
-    ILogger<ElitePlugin> ?_logger;
-    IStatusFileWatcher ?_watcher;
+    private ILogger<ElitePlugin> ?_logger;
+    private IStatusFileWatcher ?_watcher;
     
     private static async Task<PluginConfiguration> GetConfiguration()
     {
@@ -35,19 +33,8 @@ public class ElitePlugin : PluginBase, IDisposable
 
         _watcher = new StatusFileWatcher(LoggerFactory.CreateLogger<StatusFileWatcher>(), pluginConfig.StatusLocation, new Translator(LoggerFactory.CreateLogger<Translator>(), Send, this.ClearState));
 
-        _thread = Task.Run(() => initElitePlugin(default), default);
+        _watcher.Start();
         return true;
-    }
-
-    private void initElitePlugin(CancellationToken ct)
-    {
-        if (_watcher != null) {
-            _watcher.Start();
-            while (!ct.IsCancellationRequested)
-            {
-
-            }
-        }
     }
 
     public override Task Stop()
@@ -59,6 +46,8 @@ public class ElitePlugin : PluginBase, IDisposable
     public void Dispose()
     {
         GC.SuppressFinalize(this);
-        _thread.Dispose();
+        if (_watcher != null) {
+            _watcher.Dispose();
+        }
     }
 }

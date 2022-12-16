@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 public class StatusFileWatcher : IStatusFileWatcher, IDisposable
 {
-    FileSystemWatcher _fileSystemWatcher;
-    ILogger<StatusFileWatcher> _logger;
-    string _path;
+    private FileSystemWatcher _fileSystemWatcher;
+    private ILogger<StatusFileWatcher> _logger;
+    private string _path;
     private readonly IStatusTranslator _translator;
     private const string StatusFilter = @"Status*.json";
 
