@@ -1,0 +1,35 @@
+name: Publish Main Branch on push
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up .NET 6
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.404
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+      - name: Publish
+        run: cd ViLAElitePlugin && dotnet publish -c Release --manifest plugin_manifest.xml -p:DebugType=None -o publish/ViLAElitePlugin
+      - name: Zip Folder
+        run: cd ViLAElitePlugin/publish && zip -r ViLAElitePlugin.zip .
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "Latest Official Release"
+          files: |
+            **/ViLAElitePlugin.zip

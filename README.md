@@ -17,6 +17,8 @@ If you have any problems setting up the plugin or want to know more visit the [V
 
 After running ViLA with this plugin active once it will create a `config.json` inside of the plugin folder. Currently it's only possible to change the location of the Elite config folder with the `StatusLocation` value. By default it is set to the standard Elite folder and probably does not need to be changed.
 
+### Variables
+
 The following tables shows all available variables that can be used in the configuration file.
 | Variable                  | Description                                               | Type    |
 | ------------------------- | --------------------------------------------------------- | ------- |
@@ -68,7 +70,7 @@ The following tables shows all available variables that can be used in the confi
 | DestinationName           | Destination: Name                                         | string  |
 
 
-GUI focus details
+#### GUI focus details
 
 | Value | Description                          |
 | ----- | ------------------------------------ |
@@ -85,7 +87,7 @@ GUI focus details
 | 10    | Detailed Surface Scanner (SAA / DSS) |
 | 11    | Codex                                |
 
-Legal states
+#### Legal states
 
 
 | Value             | Description                                         |
