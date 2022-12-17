@@ -56,6 +56,49 @@ The following tables shows all available variables that can be used in the confi
 | SysPips                   | Sys Pips 0-8 (in half steps)                              | int     |
 | EngPips                   | Eng Pips 0-8 (in half steps)                              | int     |
 | WepPips                   | Wep Pips 0-8 (in half steps)                              | int     |
+| FireGroup                 | Currently selected firegroup number                       | int     |
+| GuiFocus                  | Shows the selected GUI screen, see list below for details | int     |
+| FuelMain                  | Fuel in main tank - mass in tons                          | float   |
+| FuelReservoir             | Fuel in reservoir tank - mass in tons                     | float   |
+| Cargo                     | Cargo mass in tonns                                       | int     |
+| LegalState                | Current legal state, see list below for details           | int     |
+| Balance                   | Current credits balance                                   | int     |
+| DestinationSystem         | Destination: System                                       | string  |
+| DestinationBody           | Destination: Body                                         | string  |
+| DestinationName           | Destination: Name                                         | string  |
+
+
+GUI focus details
+
+| Value | Description                          |
+| ----- | ------------------------------------ |
+| 0     | No GUI screen focused                |
+| 1     | Internals Panel (right side)         |
+| 2     | Externals Panel (left side)          |
+| 3     | Comms Panel (top)                    |
+| 4     | Roles Panel (bottom)                 |
+| 5     | Station services                     |
+| 6     | Galaxy Map                           |
+| 7     | System Map                           |
+| 8     | Orrery                               |
+| 9     | Full Specturm System Scanner (FSS)   |
+| 10    | Detailed Surface Scanner (SAA / DSS) |
+| 11    | Codex                                |
+
+Legal states
+
+
+| Value             | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| `Clean`           | Clean, everything is fine for now                   |
+| `IllegalCargo`    | Carrying illegal cargo                              |
+| `Speeding`        | Speeding (when approaching a station / landing pad) |
+| `Wanted`          | Wanted in the current system                        |
+| `Hostile`         | Hostile, in enemy Powerplay system                  |
+| `PassengerWanted` | Passerger is wanted                                 |
+| `Warrant`         | Warrant, scanned by AWS with outstanding bounties   |
+
+
 
 More information on most variables can be found on the [Elite Journal documenation](https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file)
 
@@ -65,9 +108,10 @@ More information on most variables can be found on the [Elite Journal documenati
 
 - [x] Fix high power draw of FileWatcher
 - [x] Update readme with all available config values and how to install
-- [ ] Better Example Configuration
+- [x] Use of non-flag values in Status.json such as firegroups, mass, heat, pips, etc
 - [ ] Main / Dev branch with automated releases
-- [ ] Use of non-flag values in Status.json such as firegroups, mass, heat, pips, etc
+- [ ] Better Example Configuration
+- [ ] Add all other missing values from Status.json (heading, altitude, etc)
 - [ ] Add various options for example "Heat warnings" (light all LEDs red), etc
 
 ### Long Term

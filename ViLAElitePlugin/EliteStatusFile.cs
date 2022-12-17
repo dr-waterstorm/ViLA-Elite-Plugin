@@ -13,49 +13,62 @@ public class EliteStatusFile
     public float? Longitude { get; set; } = 0;
     public int? Heading { get; set; } = 0;
     public int? Altitude { get; set; } = 0;
+    public int? Cargo { get; set; } = 0;
+    public string? LegalState { get; set; } = "";
+    public int? Balance { get; set; } = 0;
+    public Dictionary<string, string>?  Destination { get; set; } = new Dictionary<string, string> {{"System", ""}, {"Body", ""}, {"Name", ""}};
 
     // Calculated / expose values
     public bool ExposedGameStarted { get; set; } = false;
 
     // Flags
-    public bool? ExposedDocked { get; set; } = false;
-    public bool? ExposedLanded { get; set; } = false;
-    public bool? ExposedLandingGearDown { get; set; } = false;
-    public bool? ExposedShieldsUp { get; set; } = false;
-    public bool? ExposedSupercruise { get; set; } = false;
-    public bool? ExposedFlightAssistOff { get; set; } = false;
-    public bool? ExposedHardpointsDeployed { get; set; } = false;
-    public bool? ExposedInWing { get; set; } = false;
-    public bool? ExposedLightsOn { get; set; } = false;
-    public bool? ExposedCargoScoopDeployed { get; set; } = false;
-    public bool? ExposedSilentRunning { get; set; } = false;
-    public bool? ExposedScoopingFuel { get; set; } = false;
-    public bool? ExposedSRVHandbrake { get; set; } = false;
-    public bool? ExposedSRVTurret { get; set; } = false;
-    public bool? ExposedSRVTurretRetracted { get; set; } = false;
-    public bool? ExposedSRVDriveAssist { get; set; } = false;
-    public bool? ExposedFSDMassLocked { get; set; } = false;
-    public bool? ExposedFSDCharging { get; set; } = false;
-    public bool? ExposedFSDCooldown { get; set; } = false;
-    public bool? ExposedLowFuel { get; set; } = false;
-    public bool? ExposedOverHeating { get; set; } = false;
-    public bool? ExposedHasLatLong { get; set; } = false;
-    public bool? ExposedIsInDanger { get; set; } = false;
-    public bool? ExposedBeingInterdicted { get; set; } = false;
-    public bool? ExposedInMainShip { get; set; } = false;
-    public bool? ExposedInFighter { get; set; } = false;
-    public bool? ExposedInSRV { get; set; } = false;
-    public bool? ExposedHudInAnalysisMode { get; set; } = false;
-    public bool? ExposedNightVision { get; set; } = false;
-    public bool? ExposedAltitudeFromAverageRadius { get; set; } = false;
-    public bool? ExposedFSDJump { get; set; } = false;
-    public bool? ExposedSRVHighBeam { get; set; } = false;
+    public bool ExposedDocked { get; set; } = false;
+    public bool ExposedLanded { get; set; } = false;
+    public bool ExposedLandingGearDown { get; set; } = false;
+    public bool ExposedShieldsUp { get; set; } = false;
+    public bool ExposedSupercruise { get; set; } = false;
+    public bool ExposedFlightAssistOff { get; set; } = false;
+    public bool ExposedHardpointsDeployed { get; set; } = false;
+    public bool ExposedInWing { get; set; } = false;
+    public bool ExposedLightsOn { get; set; } = false;
+    public bool ExposedCargoScoopDeployed { get; set; } = false;
+    public bool ExposedSilentRunning { get; set; } = false;
+    public bool ExposedScoopingFuel { get; set; } = false;
+    public bool ExposedSRVHandbrake { get; set; } = false;
+    public bool ExposedSRVTurret { get; set; } = false;
+    public bool ExposedSRVTurretRetracted { get; set; } = false;
+    public bool ExposedSRVDriveAssist { get; set; } = false;
+    public bool ExposedFSDMassLocked { get; set; } = false;
+    public bool ExposedFSDCharging { get; set; } = false;
+    public bool ExposedFSDCooldown { get; set; } = false;
+    public bool ExposedLowFuel { get; set; } = false;
+    public bool ExposedOverHeating { get; set; } = false;
+    public bool ExposedHasLatLong { get; set; } = false;
+    public bool ExposedIsInDanger { get; set; } = false;
+    public bool ExposedBeingInterdicted { get; set; } = false;
+    public bool ExposedInMainShip { get; set; } = false;
+    public bool ExposedInFighter { get; set; } = false;
+    public bool ExposedInSRV { get; set; } = false;
+    public bool ExposedHudInAnalysisMode { get; set; } = false;
+    public bool ExposedNightVision { get; set; } = false;
+    public bool ExposedAltitudeFromAverageRadius { get; set; } = false;
+    public bool ExposedFSDJump { get; set; } = false;
+    public bool ExposedSRVHighBeam { get; set; } = false;
 
     // Other
-
-    public int? ExposedSysPips { get; set; } = 0;
-    public int? ExposedEngPips { get; set; } = 0;
-    public int? ExposedWepPips { get; set; } = 0;
+    public int ExposedSysPips { get; set; } = 0;
+    public int ExposedEngPips { get; set; } = 0;
+    public int ExposedWepPips { get; set; } = 0;
+    public int ExposedFireGroup { get; set; } = 0;
+    public int ExposedGuiFocus { get; set; } = 0;
+    public float ExposedFuelMain { get; set; } = 0;
+    public float ExposedFuelReservoir { get; set; } = 0;
+    public int ExposedCargo { get; set; } = 0;
+    public string ExposedLegalState { get; set; } = "";
+    public int ExposedBalance { get; set; } = 0;
+    public string ExposedDestinationSystem { get; set; } = "";
+    public string ExposedDestinationBody { get; set; } = "";
+    public string ExposedDestinationName { get; set; } = "";
 
     public void parseRawFlags () {
         var ED_Docked = 0x00000001;
@@ -132,10 +145,46 @@ public class EliteStatusFile
 
     public void parseVariables ()
     {
+        // Simple variables
+        this.ExposedFireGroup = this.FireGroup.GetValueOrDefault(0);
+        this.ExposedGuiFocus = this.GuiFocus.GetValueOrDefault(0);
+        this.ExposedCargo = this.Cargo.GetValueOrDefault(0);
+        this.ExposedBalance = this.Balance.GetValueOrDefault(0);
+        this.ExposedLegalState = this.LegalState != null ? this.LegalState : "";
+
+        // Variables that need parsing
         if (this.Pips != null && this.Pips.Count == 3) {
             this.ExposedSysPips = this.Pips[0];
             this.ExposedEngPips = this.Pips[1];
             this.ExposedWepPips = this.Pips[2];
+        }
+
+        if (this.Fuel != null)
+        {
+            if (this.Fuel.ContainsKey("FuelMain"))
+            {
+                this.ExposedFuelMain = this.Fuel["FuelMain"];
+            }
+            if (this.Fuel.ContainsKey("FuelReservoir"))
+            {
+                this.ExposedFuelReservoir = this.Fuel["FuelReservoir"];
+            }
+        }
+
+        if (this.Destination != null)
+        {
+            if (this.Destination.ContainsKey("System"))
+            {
+                this.ExposedDestinationSystem = this.Destination["System"];
+            }
+            if (this.Destination.ContainsKey("Body"))
+            {
+                this.ExposedDestinationBody = this.Destination["Body"];
+            }
+            if (this.Destination.ContainsKey("Name"))
+            {
+                this.ExposedDestinationName = this.Destination["Name"];
+            }
         }
     }
 
