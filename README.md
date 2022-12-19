@@ -102,7 +102,7 @@ The following tables shows all available variables that can be used in the confi
 
 
 
-More information on most variables can be found on the [Elite Journal documenation](https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file)
+More information on most variables can be found on the [Elite Journal documentation](https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file)
 
 ## Roadmap:
 
@@ -111,11 +111,11 @@ More information on most variables can be found on the [Elite Journal documenati
 - [x] Fix high power draw of FileWatcher
 - [x] Update readme with all available config values and how to install
 - [x] Use of non-flag values in Status.json such as firegroups, mass, heat, pips, etc
-- [ ] Main / Dev branch with automated releases
+- [x] Main / Dev branch with automated releases
 - [ ] Better Example Configuration
 - [ ] Add all other missing values from Status.json (heading, altitude, etc)
-- [ ] Add various options for example "Heat warnings" (light all LEDs red), etc
 
 ### Long Term
 
-- [ ] Add on foot values?
+- [ ] Add various options for example "Heat warnings" (light all LEDs red), etc
+- [ ] Add on foot values
