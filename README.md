@@ -20,54 +20,54 @@ After running ViLA with this plugin active once it will create a `config.json` i
 ### Variables
 
 The following tables shows all available variables that can be used in the configuration file.
-| Variable                  | Description                                               | Type    |
-| ------------------------- | --------------------------------------------------------- | ------- |
-| GameStarted               | The game has started (flags in the Status.json are not 0) | boolean |
-| Docked                    | Docked on a landing pad                                   | boolean |
-| Landed                    | Landed on a planet                                        | boolean |
-| LandingGearDown           | Landing gear down                                         | boolean |
-| ShieldsUp                 | Shields up                                                | boolean |
-| Supercruise               | In  Supercruise                                           | boolean |
-| FlightAssistOff           | FlightAssist off                                          | boolean |
-| HardpointsDeployed        | Hardpoints deployed                                       | boolean |
-| InWing                    | In wing                                                   | boolean |
-| LightsOn                  | Lights on                                                 | boolean |
-| CargoScoopDeployed        | Cargo scoop deployed                                      | boolean |
-| SilentRunning             | Silent running                                            | boolean |
-| ScoopingFuel              | Scooping fuel                                             | boolean |
-| SRVHandbrake              | Handbrake on (SRV)                                        | boolean |
-| SRVTurret                 | Using Turrent view (SRV)                                  | boolean |
-| SRVTurretRetracted        | Turret retracted (SRV, when close to ship)                | boolean |
-| SRVDriveAssist            | Drive Assist (SRV)                                        | boolean |
-| FSDMassLocked             | Mass Locked (FSD)                                         | boolean |
-| FSDCharging               | FSD Charging                                              | boolean |
-| FSDCooldown               | FSD in cooldown                                           | boolean |
-| LowFuel                   | Low on fuel (< 25%)                                       | boolean |
-| OverHeating               | Over Heating (> 100%)                                     | boolean |
-| HasLatLong                | ?                                                         | boolean |
-| IsInDanger                | ?                                                         | boolean |
-| BeingInterdicted          | Being interdicted                                         | boolean |
-| InMainShip                | In main ship                                              | boolean |
-| InFighter                 | In fighter                                                | boolean |
-| InSRV                     | In SRV                                                    | boolean |
-| HudInAnalysisMode         | In Analysis Mode (HUD)                                    | boolean |
-| NightVision               | Night Vision on                                           | boolean |
-| AltitudeFromAverageRadius | ?                                                         | boolean |
-| FSDJump                   | ?                                                         | boolean |
-| SRVHighBeam               | ?                                                         | boolean |
-| SysPips                   | Sys Pips 0-8 (in half steps)                              | int     |
-| EngPips                   | Eng Pips 0-8 (in half steps)                              | int     |
-| WepPips                   | Wep Pips 0-8 (in half steps)                              | int     |
-| FireGroup                 | Currently selected firegroup number                       | int     |
-| GuiFocus                  | Shows the selected GUI screen, see list below for details | int     |
-| FuelMain                  | Fuel in main tank - mass in tons                          | float   |
-| FuelReservoir             | Fuel in reservoir tank - mass in tons                     | float   |
-| Cargo                     | Cargo mass in tonns                                       | int     |
-| LegalState                | Current legal state, see list below for details           | int     |
-| Balance                   | Current credits balance                                   | int     |
-| DestinationSystem         | Destination: System                                       | string  |
-| DestinationBody           | Destination: Body                                         | string  |
-| DestinationName           | Destination: Name                                         | string  |
+| Variable                  | Description                                                        | Type    |
+| ------------------------- | ------------------------------------------------------------------ | ------- |
+| GameStarted               | The game has started (flags in the Status.json are not 0)          | boolean |
+| Docked                    | Docked on a landing pad                                            | boolean |
+| Landed                    | Landed on a planet                                                 | boolean |
+| LandingGearDown           | Landing gear down                                                  | boolean |
+| ShieldsUp                 | Shields up                                                         | boolean |
+| Supercruise               | In Supercruise                                                     | boolean |
+| FlightAssistOff           | FlightAssist off                                                   | boolean |
+| HardpointsDeployed        | Hardpoints deployed                                                | boolean |
+| InWing                    | In wing                                                            | boolean |
+| LightsOn                  | Lights on                                                          | boolean |
+| CargoScoopDeployed        | Cargo scoop deployed                                               | boolean |
+| SilentRunning             | Silent running                                                     | boolean |
+| ScoopingFuel              | Scooping fuel                                                      | boolean |
+| SRVHandbrake              | Handbrake on (SRV)                                                 | boolean |
+| SRVTurret                 | Using Turrent view (SRV)                                           | boolean |
+| SRVTurretRetracted        | Turret retracted (SRV, when close to ship)                         | boolean |
+| SRVDriveAssist            | Drive Assist (SRV)                                                 | boolean |
+| FSDMassLocked             | Mass Locked (FSD)                                                  | boolean |
+| FSDCharging               | FSD Charging                                                       | boolean |
+| FSDCooldown               | FSD in cooldown                                                    | boolean |
+| LowFuel                   | Low on fuel (< 25%)                                                | boolean |
+| OverHeating               | Over Heating (> 100%)                                              | boolean |
+| HasLatLong                | ?                                                                  | boolean |
+| IsInDanger                | ?                                                                  | boolean |
+| BeingInterdicted          | Being interdicted                                                  | boolean |
+| InMainShip                | In main ship                                                       | boolean |
+| InFighter                 | In fighter                                                         | boolean |
+| InSRV                     | In SRV                                                             | boolean |
+| HudInAnalysisMode         | In Analysis Mode (HUD)                                             | boolean |
+| NightVision               | Night Vision on                                                    | boolean |
+| AltitudeFromAverageRadius | Altitude above planet from average radius (used when farther away) | boolean |
+| FSDJump                   | FSD Jump (jumping to another system)                               | boolean |
+| SRVHighBeam               | ?                                                                  | boolean |
+| SysPips                   | Sys Pips 0-8 (in half steps)                                       | int     |
+| EngPips                   | Eng Pips 0-8 (in half steps)                                       | int     |
+| WepPips                   | Wep Pips 0-8 (in half steps)                                       | int     |
+| FireGroup                 | Currently selected firegroup number                                | int     |
+| GuiFocus                  | Shows the selected GUI screen, see list below for details          | int     |
+| FuelMain                  | Fuel in main tank - mass in tons                                   | float   |
+| FuelReservoir             | Fuel in reservoir tank - mass in tons                              | float   |
+| Cargo                     | Cargo mass in tonns                                                | int     |
+| LegalState                | Current legal state, see list below for details                    | int     |
+| Balance                   | Current credits balance                                            | int     |
+| DestinationSystem         | Destination: System                                                | string  |
+| DestinationBody           | Destination: Body                                                  | string  |
+| DestinationName           | Destination: Name                                                  | string  |
 
 
 #### GUI focus details
@@ -102,20 +102,22 @@ The following tables shows all available variables that can be used in the confi
 
 
 
-More information on most variables can be found on the [Elite Journal documentation](https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file)
+More information on most variables can be found on the [Elite Journal Status.json overview](https://elite-journal.readthedocs.io/en/latest/Status%20File/#status-file) and [Elite Journal Documentation PDF Manual](https://hosting.zaonce.net/community/journal/v32/Journal_Manual-v32.pdf).
 
 ## Roadmap:
 
 ### Currently planned
 
+#### Initial Release
+
 - [x] Fix high power draw of FileWatcher
 - [x] Update readme with all available config values and how to install
 - [x] Use of non-flag values in Status.json such as firegroups, mass, heat, pips, etc
 - [x] Main / Dev branch with automated releases
-- [ ] Better Example Configuration
-- [ ] Add all other missing values from Status.json (heading, altitude, etc)
+- [x] Add Example Configuration for Virpil Control Panel #2
 
-### Long Term
+#### Long Term
 
 - [ ] Add various options for example "Heat warnings" (light all LEDs red), etc
+- [ ] Add all other missing values from Status.json (heading, altitude, etc) - do we actually need them?
 - [ ] Add on foot values

@@ -13,7 +13,7 @@ public class EliteStatusFile
     public float? Longitude { get; set; } = 0;
     public int? Heading { get; set; } = 0;
     public int? Altitude { get; set; } = 0;
-    public int? Cargo { get; set; } = 0;
+    public float? Cargo { get; set; } = 0;
     public string? LegalState { get; set; } = "";
     public int? Balance { get; set; } = 0;
     public Dictionary<string, string>?  Destination { get; set; } = new Dictionary<string, string> {{"System", ""}, {"Body", ""}, {"Name", ""}};
@@ -63,7 +63,7 @@ public class EliteStatusFile
     public int ExposedGuiFocus { get; set; } = 0;
     public float ExposedFuelMain { get; set; } = 0;
     public float ExposedFuelReservoir { get; set; } = 0;
-    public int ExposedCargo { get; set; } = 0;
+    public float ExposedCargo { get; set; } = 0;
     public string ExposedLegalState { get; set; } = "";
     public int ExposedBalance { get; set; } = 0;
     public string ExposedDestinationSystem { get; set; } = "";
@@ -190,6 +190,7 @@ public class EliteStatusFile
 
     public void updateAllIntProperties (IStatusTranslator statusTranslator)
     {
+        Console.WriteLine("Updating props...");
         // only update if the game is running
         if (this.ExposedGameStarted)
         {
@@ -202,6 +203,8 @@ public class EliteStatusFile
                     statusTranslator.FromStatusFile(property.Name.Remove(0,7), property.GetValue(this, null));
                 }
             }
+
+            Console.WriteLine("Updated props!");
         }
     }
 }
