@@ -3,9 +3,63 @@
     "devices": {
         "025B": {
             "OnBoard": {
-                "6": [
+                "1": [
                     {
-                        "color": "ff0000",
+                        "color": "404040",
+                        "trigger": {
+                            "id": "CargoScoopDeployed",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "404000",
+                        "trigger": {
+                            "id": "CargoScoopDeployed",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "2": [
+                    {
+                        "color": "400000",
+                        "trigger": {
+                            "id": "HudInAnalysisMode",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "id": "HudInAnalysisMode",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "4": [
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "HardpointsDeployed",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "400000",
+                        "trigger": {
+                            "id": "HardpointsDeployed",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "5": [
+                    {
+                        "color": "800000",
                         "trigger": {
                             "id": "ShieldsUp",
                             "value": false,
@@ -13,9 +67,462 @@
                         }
                     },
                     {
-                        "color": "000080",
+                        "color": "000040",
                         "trigger": {
                             "id": "ShieldsUp",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "6": [
+                    {
+                        "color": "000000",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "FSDMassLocked",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "LowFuel",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "BeingInterdicted",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "400040",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "FSDMassLocked",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "LowFuel",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "BeingInterdicted",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "ff0000",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LowFuel",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "BeingInterdicted",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "Or"
+                        }
+                    }
+                ],
+                "7": [
+                    {
+                        "color": "000000",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "Supercruise",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "FSDJump",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "Supercruise",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "404000",
+                        "trigger": {
+                            "id": "FSDJump",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "8": [
+                    {
+                        "color": "000000",
+                        "trigger": {
+                            "id": "LandingGearDown",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "004000",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Docked",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Landed",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Docked",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Landed",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    }
+                ],
+                "9": [
+                    {
+                        "color": "000000",
+                        "trigger": {
+                            "id": "LandingGearDown",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "004000",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Docked",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Landed",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Docked",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Landed",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    }
+                ],
+                "10": [
+                    {
+                        "color": "000000",
+                        "trigger": {
+                            "id": "LandingGearDown",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "004000",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Docked",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Landed",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Docked",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "LandingGearDown",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "Landed",
+                                    "value": true,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    }
+                ],
+                "11": [
+                    {
+                        "color": "000000",
+                        "trigger": {
+                            "value": [
+                                {
+                                    "id": "Supercruise",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                },
+                                {
+                                    "id": "FSDJump",
+                                    "value": false,
+                                    "comparator": "EqualTo"
+                                }
+                            ],
+                            "comparator": "And"
+                        }
+                    },
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "Supercruise",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "404000",
+                        "trigger": {
+                            "id": "FSDJump",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "12": [
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "GuiFocus",
+                            "value": 6,
+                            "comparator": "NotEqualTo"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "id": "GuiFocus",
+                            "value": 6,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "13": [
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "NightVision",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "004000",
+                        "trigger": {
+                            "id": "NightVision",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "14": [
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "SilentRunning",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "400000",
+                        "trigger": {
+                            "id": "SilentRunning",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "15": [
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "GuiFocus",
+                            "value": 7,
+                            "comparator": "NotEqualTo"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "id": "GuiFocus",
+                            "value": 7,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],
+                "16": [
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "LightsOn",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "000040",
+                        "trigger": {
+                            "id": "LightsOn",
+                            "value": true,
+                            "comparator": "EqualTo"
+                        }
+                    }
+                ],  
+                "17": [
+                    {
+                        "color": "404040",
+                        "trigger": {
+                            "id": "OverHeating",
+                            "value": false,
+                            "comparator": "EqualTo"
+                        }
+                    },
+                    {
+                        "color": "400000",
+                        "trigger": {
+                            "id": "OverHeating",
                             "value": true,
                             "comparator": "EqualTo"
                         }
