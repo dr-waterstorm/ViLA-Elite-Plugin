@@ -136,6 +136,7 @@ More information on most variables can be found on the [Elite Journal Status.jso
 - [x] Use of non-flag values in Status.json such as firegroups, mass, heat, pips, etc
 - [x] Main / Dev branch with automated releases
 - [x] Add Example Configuration for Virpil Control Panel #2
+- [ ] Add Example Configuration for Virpil Control Panel #1
 
 #### Long Term
 
