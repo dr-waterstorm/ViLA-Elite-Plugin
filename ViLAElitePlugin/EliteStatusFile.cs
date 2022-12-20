@@ -190,7 +190,6 @@ public class EliteStatusFile
 
     public void updateAllIntProperties (IStatusTranslator statusTranslator)
     {
-        Console.WriteLine("Updating props...");
         // only update if the game is running
         if (this.ExposedGameStarted)
         {
@@ -203,8 +202,6 @@ public class EliteStatusFile
                     statusTranslator.FromStatusFile(property.Name.Remove(0,7), property.GetValue(this, null));
                 }
             }
-
-            Console.WriteLine("Updated props!");
         }
     }
 }
