@@ -67,7 +67,6 @@ public class StatusFileWatcher : IStatusFileWatcher, IDisposable
             using (StreamReader streamReader = new StreamReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
             {
                 statusFile = streamReader.ReadToEnd();
-                _logger.LogInformation(statusFile);
             }
 
             EliteStatusFile eliteStatusFile = JsonConvert.DeserializeObject<EliteStatusFile>(statusFile) ?? throw new JsonSerializationException("Result was null");
