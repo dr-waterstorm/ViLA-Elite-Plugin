@@ -17,20 +17,37 @@ If you have any problems setting up the plugin or want to know more visit the [V
 
 To get started with an example configuration, you can copy the `EliteSettings.json`, located in the `ViLAEliteConfiguration` folder, into the ViLA `Configuration` folder. 
 
-The example currently assumes the following button setup for the LEDs to light up the correct buttons:
+The example currently assumes the following button setup for the LEDs to light up the correct buttons for the Virpil Control Panel 2:
 
 | Button | Function                 |
 | ------ | ------------------------ |
 | B1     | Toggle HUD Mode          |
 | B2     | Toggle Cargo Scoop       |
 | B3     | Toggle Hardpoints        |
-| B4     | -                        |
+| B4     | Toggle Landing Gear      |
 | B5     | Deploy Heatsink          |
 | B6     | Toggle Silent Running    |
 | B7     | Toggle Lights            |
 | B8     | Toggle Night Vision Mode |
 | B9     | Open System Map          |
 | B10    | Open Galaxy Map          |
+
+And the following for the Virpil Control Panel 1:
+
+| Button | Function                 |
+| ------ | ------------------------ |
+| B1     | Toggle HUD Mode          |
+| B2     | Toggle Cargo Scoop       |
+| B3     | Toggle Landing Gear      |
+| B4     | Toggle Hardpoints        |
+| B5     | Open System Map          |
+| B6     | Open Galaxy Map          |
+| B7     | Toggle DSS               |
+| B8     | Toggle Lights            |
+| B9     | Deploy Heatsink          |
+| B10    | Exit FSS                 |
+| B11    | Toggle Night Vision Mode |
+| B12    | Toggle Silent Running    |
 
 You can modify the file according to your needs and wishes. See the Configuration section below for more information.
 
@@ -136,7 +153,7 @@ More information on most variables can be found on the [Elite Journal Status.jso
 - [x] Use of non-flag values in Status.json such as firegroups, mass, heat, pips, etc
 - [x] Main / Dev branch with automated releases
 - [x] Add Example Configuration for Virpil Control Panel #2
-- [ ] Add Example Configuration for Virpil Control Panel #1
+- [x] Add Example Configuration for Virpil Control Panel #1
 
 #### Long Term
 
