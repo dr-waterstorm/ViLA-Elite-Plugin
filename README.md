@@ -100,12 +100,14 @@ The following tables shows all available variables that can be used in the confi
 | GuiFocus                  | Shows the selected GUI screen, see list below for details          | int     |
 | FuelMain                  | Fuel in main tank - mass in tons                                   | float   |
 | FuelReservoir             | Fuel in reservoir tank - mass in tons                              | float   |
-| Cargo                     | Cargo mass in tonns                                                | int     |
-| LegalState                | Current legal state, see list below for details                    | int     |
-| Balance                   | Current credits balance                                            | int     |
+| Cargo                     | Cargo mass in tonns                                                | float   |
+| LegalState                | Current legal state, see list below for details                    | string  |
+| Balance                   | Current credits balance                                            | long    |
 | DestinationSystem         | Destination: System                                                | string  |
 | DestinationBody           | Destination: Body                                                  | string  |
 | DestinationName           | Destination: Name                                                  | string  |
+
+Note on `Balance`: the value itself can be larger than 2,147,483,647 credits, but ViLA parses whole numbers in the configuration as 32 bit ints. Use a comparison value below that limit (e.g. `1000000000`), otherwise ViLA cannot read the configuration.
 
 
 #### GUI focus details

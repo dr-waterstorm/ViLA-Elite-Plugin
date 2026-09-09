@@ -4,7 +4,8 @@ public class EliteStatusFile
 {
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     public string Event { get; set; } = "";
-    public int Flags { get; set; } = 0;
+    // Flags is a 32 bit mask, so it does not fit into an int once the highest bit (SRVHighBeam) is set
+    public long Flags { get; set; } = 0;
     public List<int>? Pips { get; set; } = new List<int>();
     public int? FireGroup { get; set; } = 0;
     public Dictionary<string, float>?  Fuel { get; set; } = new Dictionary<string, float> {{"FuelMain", 0}, {"FuelReservoir", 0}};
@@ -15,7 +16,8 @@ public class EliteStatusFile
     public int? Altitude { get; set; } = 0;
     public float? Cargo { get; set; } = 0;
     public string? LegalState { get; set; } = "";
-    public int? Balance { get; set; } = 0;
+    // Credits can easily exceed the int range
+    public long? Balance { get; set; } = 0;
     public Dictionary<string, string>?  Destination { get; set; } = new Dictionary<string, string> {{"System", ""}, {"Body", ""}, {"Name", ""}};
 
     // Calculated / expose values
@@ -65,7 +67,7 @@ public class EliteStatusFile
     public float ExposedFuelReservoir { get; set; } = 0;
     public float ExposedCargo { get; set; } = 0;
     public string ExposedLegalState { get; set; } = "";
-    public int ExposedBalance { get; set; } = 0;
+    public long ExposedBalance { get; set; } = 0;
     public string ExposedDestinationSystem { get; set; } = "";
     public string ExposedDestinationBody { get; set; } = "";
     public string ExposedDestinationName { get; set; } = "";
