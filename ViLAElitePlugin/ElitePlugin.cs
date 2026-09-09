@@ -31,7 +31,10 @@ public class ElitePlugin : PluginBase, IDisposable
 
         _logger.LogInformation("Status.json Path: " + pluginConfig.StatusLocation);
 
-        _watcher = new StatusFileWatcher(LoggerFactory.CreateLogger<StatusFileWatcher>(), pluginConfig.StatusLocation, new Translator(LoggerFactory.CreateLogger<Translator>(), Send, this.ClearState));
+        // PluginBase.ClearState is deliberately not used: it clears the one state dictionary ViLA
+        // keeps for all plugins, which would drop the other plugins' values as well. It also only
+        // clears - ViLA does not re-evaluate any condition or touch a single LED because of it.
+        _watcher = new StatusFileWatcher(LoggerFactory.CreateLogger<StatusFileWatcher>(), pluginConfig.StatusLocation, new Translator(LoggerFactory.CreateLogger<Translator>(), Send));
 
         _watcher.Start();
         return true;
