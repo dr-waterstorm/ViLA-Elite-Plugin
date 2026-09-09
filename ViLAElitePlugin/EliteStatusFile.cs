@@ -1,11 +1,27 @@
 using System.Reflection;
+using Newtonsoft.Json;
 
 public class EliteStatusFile
 {
+    private const string ExposedPrefix = "Exposed";
+
+    // Every property prefixed with "Exposed" is sent to ViLA under its name without the prefix.
+    // Status.json changes about once a second, so the list is built once instead of per update.
+    private static readonly (string Id, PropertyInfo Property)[] ExposedProperties = typeof(EliteStatusFile)
+        .GetProperties()
+        .Where(property => property.Name.StartsWith(ExposedPrefix) && property.Name != nameof(ExposedGameStarted))
+        .Select(property => (IdFor(property.Name), property))
+        .ToArray();
+
+    private static readonly string GameStartedId = IdFor(nameof(ExposedGameStarted));
+
+    // Raw values of the status file
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
     public string Event { get; set; } = "";
+
     // Flags is a 32 bit mask, so it does not fit into an int once the highest bit (SRVHighBeam) is set
     public long Flags { get; set; } = 0;
+    public long Flags2 { get; set; } = 0;
     public List<int>? Pips { get; set; } = new List<int>();
     public int? FireGroup { get; set; } = 0;
     public Dictionary<string, float>?  Fuel { get; set; } = new Dictionary<string, float> {{"FuelMain", 0}, {"FuelReservoir", 0}};
@@ -13,12 +29,29 @@ public class EliteStatusFile
     public float? Latitude { get; set; } = 0;
     public float? Longitude { get; set; } = 0;
     public int? Heading { get; set; } = 0;
-    public int? Altitude { get; set; } = 0;
+
+    // read as a double: the value is large (meters, from the average radius when far away) and
+    // nothing promises it stays a whole number
+    public double? Altitude { get; set; } = 0;
     public float? Cargo { get; set; } = 0;
     public string? LegalState { get; set; } = "";
+
     // Credits can easily exceed the int range
     public long? Balance { get; set; } = 0;
     public Dictionary<string, string>?  Destination { get; set; } = new Dictionary<string, string> {{"System", ""}, {"Body", ""}, {"Name", ""}};
+
+    // On foot values (Odyssey), only written while on foot
+    public float? Oxygen { get; set; } = 0;
+    public float? Health { get; set; } = 0;
+    public float? Temperature { get; set; } = 0;
+    public string? SelectedWeapon { get; set; } = "";
+
+    // not documented by Frontier, but written whenever the weapon has a readable name
+    [JsonProperty("SelectedWeapon_Localised")]
+    public string? SelectedWeaponLocalised { get; set; } = "";
+    public float? Gravity { get; set; } = 0;
+    public string? BodyName { get; set; } = "";
+    public double? PlanetRadius { get; set; } = 0;
 
     // Calculated / expose values
     public bool ExposedGameStarted { get; set; } = false;
@@ -57,6 +90,31 @@ public class EliteStatusFile
     public bool ExposedFSDJump { get; set; } = false;
     public bool ExposedSRVHighBeam { get; set; } = false;
 
+    // Flags2 (Odyssey, on foot)
+    public bool ExposedOnFoot { get; set; } = false;
+    public bool ExposedInTaxi { get; set; } = false;
+    public bool ExposedInMultiCrew { get; set; } = false;
+    public bool ExposedOnFootInStation { get; set; } = false;
+    public bool ExposedOnFootOnPlanet { get; set; } = false;
+    public bool ExposedAimDownSight { get; set; } = false;
+    public bool ExposedLowOxygen { get; set; } = false;
+    public bool ExposedLowHealth { get; set; } = false;
+    public bool ExposedCold { get; set; } = false;
+    public bool ExposedHot { get; set; } = false;
+    public bool ExposedVeryCold { get; set; } = false;
+    public bool ExposedVeryHot { get; set; } = false;
+    public bool ExposedGlideMode { get; set; } = false;
+    public bool ExposedOnFootInHangar { get; set; } = false;
+    public bool ExposedOnFootSocialSpace { get; set; } = false;
+    public bool ExposedOnFootExterior { get; set; } = false;
+    public bool ExposedBreathableAtmosphere { get; set; } = false;
+    public bool ExposedTelepresenceMultiCrew { get; set; } = false;
+    public bool ExposedPhysicalMultiCrew { get; set; } = false;
+    public bool ExposedFSDHyperdriveCharging { get; set; } = false;
+    public bool ExposedSupercruiseOverdrive { get; set; } = false;
+    public bool ExposedSupercruiseAssist { get; set; } = false;
+    public bool ExposedNPCCrewActive { get; set; } = false;
+
     // Other
     public int ExposedSysPips { get; set; } = 0;
     public int ExposedEngPips { get; set; } = 0;
@@ -71,81 +129,90 @@ public class EliteStatusFile
     public string ExposedDestinationSystem { get; set; } = "";
     public string ExposedDestinationBody { get; set; } = "";
     public string ExposedDestinationName { get; set; } = "";
+    public string ExposedDestinationNameLocalised { get; set; } = "";
+    public float ExposedLatitude { get; set; } = 0;
+    public float ExposedLongitude { get; set; } = 0;
+    public int ExposedHeading { get; set; } = 0;
+    public double ExposedAltitude { get; set; } = 0;
 
-    public void parseRawFlags () {
-        var ED_Docked = 0x00000001;
-        var ED_Landed = 0x00000002;
-        var ED_LandingGearDown = 0x00000004;
-        var ED_ShieldsUp = 0x00000008;
-        var ED_Supercruise = 0x00000010;
-        var ED_FlightAssistOff = 0x00000020;
-        var ED_HardpointsDeployed = 0x00000040;
-        var ED_InWing = 0x00000080;
+    // On foot (Odyssey)
+    public float ExposedOxygen { get; set; } = 0;
+    public float ExposedHealth { get; set; } = 0;
+    public float ExposedTemperature { get; set; } = 0;
+    public float ExposedGravity { get; set; } = 0;
+    public string ExposedSelectedWeapon { get; set; } = "";
+    public string ExposedSelectedWeaponLocalised { get; set; } = "";
+    public string ExposedBodyName { get; set; } = "";
+    public double ExposedPlanetRadius { get; set; } = 0;
 
-        var ED_LightsOn = 0x00000100;
-        var ED_CargoScoopDeployed = 0x00000200;
-        var ED_SilentRunning = 0x00000400;
-        var ED_ScoopingFuel = 0x00000800;
-        var ED_SRVHandbrake = 0x00001000;
-        var ED_SRVTurret = 0x00002000;
-        var ED_SRVTurretRetracted = 0x00004000;
-        var ED_SRVDriveAssist = 0x00008000;
+    public void ParseFlags ()
+    {
+        var flags = (StatusFlags) this.Flags;
+        var flags2 = (StatusFlags2) this.Flags2;
 
-        var ED_FSDMassLocked = 0x00010000;
-        var ED_FSDCharging = 0x00020000;
-        var ED_FSDCooldown = 0x00040000;
-        var ED_LowFuel = 0x00080000;
-        var ED_OverHeating = 0x00100000;
-        var ED_HasLatLong = 0x00200000;
-        var ED_IsInDanger = 0x00400000;
-        var ED_BeingInterdicted = 0x00800000;
+        // Both masks are 0 while the game is not in play. Flags alone is not enough: on foot none
+        // of the ship states apply, so only Flags2 is set.
+        this.ExposedGameStarted = flags != StatusFlags.None || flags2 != StatusFlags2.None;
 
-        var ED_InMainShip = 0x01000000;
-        var ED_InFighter = 0x02000000;
-        var ED_InSRV = 0x04000000;
-        var ED_HudInAnalysisMode = 0x08000000;
-        var ED_NightVision = 0x10000000;
+        this.ExposedDocked = flags.HasFlag(StatusFlags.Docked);
+        this.ExposedLanded = flags.HasFlag(StatusFlags.Landed);
+        this.ExposedLandingGearDown = flags.HasFlag(StatusFlags.LandingGearDown);
+        this.ExposedShieldsUp = flags.HasFlag(StatusFlags.ShieldsUp);
+        this.ExposedSupercruise = flags.HasFlag(StatusFlags.Supercruise);
+        this.ExposedFlightAssistOff = flags.HasFlag(StatusFlags.FlightAssistOff);
+        this.ExposedHardpointsDeployed = flags.HasFlag(StatusFlags.HardpointsDeployed);
+        this.ExposedInWing = flags.HasFlag(StatusFlags.InWing);
+        this.ExposedLightsOn = flags.HasFlag(StatusFlags.LightsOn);
+        this.ExposedCargoScoopDeployed = flags.HasFlag(StatusFlags.CargoScoopDeployed);
+        this.ExposedSilentRunning = flags.HasFlag(StatusFlags.SilentRunning);
+        this.ExposedScoopingFuel = flags.HasFlag(StatusFlags.ScoopingFuel);
+        this.ExposedSRVHandbrake = flags.HasFlag(StatusFlags.SRVHandbrake);
+        this.ExposedSRVTurret = flags.HasFlag(StatusFlags.SRVTurret);
+        this.ExposedSRVTurretRetracted = flags.HasFlag(StatusFlags.SRVTurretRetracted);
+        this.ExposedSRVDriveAssist = flags.HasFlag(StatusFlags.SRVDriveAssist);
+        this.ExposedFSDMassLocked = flags.HasFlag(StatusFlags.FSDMassLocked);
+        this.ExposedFSDCharging = flags.HasFlag(StatusFlags.FSDCharging);
+        this.ExposedFSDCooldown = flags.HasFlag(StatusFlags.FSDCooldown);
+        this.ExposedLowFuel = flags.HasFlag(StatusFlags.LowFuel);
+        this.ExposedOverHeating = flags.HasFlag(StatusFlags.OverHeating);
+        this.ExposedHasLatLong = flags.HasFlag(StatusFlags.HasLatLong);
+        this.ExposedIsInDanger = flags.HasFlag(StatusFlags.IsInDanger);
+        this.ExposedBeingInterdicted = flags.HasFlag(StatusFlags.BeingInterdicted);
+        this.ExposedInMainShip = flags.HasFlag(StatusFlags.InMainShip);
+        this.ExposedInFighter = flags.HasFlag(StatusFlags.InFighter);
+        this.ExposedInSRV = flags.HasFlag(StatusFlags.InSRV);
+        this.ExposedHudInAnalysisMode = flags.HasFlag(StatusFlags.HudInAnalysisMode);
+        this.ExposedNightVision = flags.HasFlag(StatusFlags.NightVision);
+        this.ExposedAltitudeFromAverageRadius = flags.HasFlag(StatusFlags.AltitudeFromAverageRadius);
+        this.ExposedFSDJump = flags.HasFlag(StatusFlags.FSDJump);
+        this.ExposedSRVHighBeam = flags.HasFlag(StatusFlags.SRVHighBeam);
 
-        var ED_AltitudeFromAverageRadius = 0x20000000;
-        var ED_FSDJump = 0x40000000;
-        var ED_SRVHighBeam = 0x80000000;
-
-        this.ExposedGameStarted = (this.Flags != 0);
-        this.ExposedDocked = (this.Flags & ED_Docked) != 0 ? true : false;
-        this.ExposedLanded = (this.Flags & ED_Landed) != 0 ? true : false;
-        this.ExposedLandingGearDown = (this.Flags & ED_LandingGearDown) != 0 ? true : false;
-        this.ExposedShieldsUp = (this.Flags & ED_ShieldsUp) != 0 ? true : false;
-        this.ExposedSupercruise = (this.Flags & ED_Supercruise) != 0 ? true : false;
-        this.ExposedFlightAssistOff = (this.Flags & ED_FlightAssistOff) != 0 ? true : false;
-        this.ExposedHardpointsDeployed = (this.Flags & ED_HardpointsDeployed) != 0 ? true : false;
-        this.ExposedInWing = (this.Flags & ED_InWing) != 0 ? true : false;
-        this.ExposedLightsOn = (this.Flags & ED_LightsOn) != 0 ? true : false;
-        this.ExposedCargoScoopDeployed = (this.Flags & ED_CargoScoopDeployed) != 0 ? true : false;
-        this.ExposedSilentRunning = (this.Flags & ED_SilentRunning) != 0 ? true : false;
-        this.ExposedScoopingFuel = (this.Flags & ED_ScoopingFuel) != 0 ? true : false;
-        this.ExposedSRVHandbrake = (this.Flags & ED_SRVHandbrake) != 0 ? true : false;
-        this.ExposedSRVTurret = (this.Flags & ED_SRVTurret) != 0 ? true : false;
-        this.ExposedSRVTurretRetracted = (this.Flags & ED_SRVTurretRetracted) != 0 ? true : false;
-        this.ExposedSRVDriveAssist = (this.Flags & ED_SRVDriveAssist) != 0 ? true : false;
-        this.ExposedFSDMassLocked = (this.Flags & ED_FSDMassLocked) != 0 ? true : false;
-        this.ExposedFSDCharging = (this.Flags & ED_FSDCharging) != 0 ? true : false;
-        this.ExposedFSDCooldown = (this.Flags & ED_FSDCooldown) != 0 ? true : false;
-        this.ExposedLowFuel = (this.Flags & ED_LowFuel) != 0 ? true : false;
-        this.ExposedOverHeating = (this.Flags & ED_OverHeating) != 0 ? true : false;
-        this.ExposedHasLatLong = (this.Flags & ED_HasLatLong) != 0 ? true : false;
-        this.ExposedIsInDanger = (this.Flags & ED_IsInDanger) != 0 ? true : false;
-        this.ExposedBeingInterdicted = (this.Flags & ED_BeingInterdicted) != 0 ? true : false;
-        this.ExposedInMainShip = (this.Flags & ED_InMainShip) != 0 ? true : false;
-        this.ExposedInFighter = (this.Flags & ED_InFighter) != 0 ? true : false;
-        this.ExposedInSRV = (this.Flags & ED_InSRV) != 0 ? true : false;
-        this.ExposedHudInAnalysisMode = (this.Flags & ED_HudInAnalysisMode) != 0 ? true : false;
-        this.ExposedNightVision = (this.Flags & ED_NightVision) != 0 ? true : false;
-        this.ExposedAltitudeFromAverageRadius = (this.Flags & ED_AltitudeFromAverageRadius) != 0 ? true : false;
-        this.ExposedFSDJump = (this.Flags & ED_FSDJump) != 0 ? true : false;
-        this.ExposedSRVHighBeam = (this.Flags & ED_SRVHighBeam) != 0 ? true : false;
+        this.ExposedOnFoot = flags2.HasFlag(StatusFlags2.OnFoot);
+        this.ExposedInTaxi = flags2.HasFlag(StatusFlags2.InTaxi);
+        this.ExposedInMultiCrew = flags2.HasFlag(StatusFlags2.InMultiCrew);
+        this.ExposedOnFootInStation = flags2.HasFlag(StatusFlags2.OnFootInStation);
+        this.ExposedOnFootOnPlanet = flags2.HasFlag(StatusFlags2.OnFootOnPlanet);
+        this.ExposedAimDownSight = flags2.HasFlag(StatusFlags2.AimDownSight);
+        this.ExposedLowOxygen = flags2.HasFlag(StatusFlags2.LowOxygen);
+        this.ExposedLowHealth = flags2.HasFlag(StatusFlags2.LowHealth);
+        this.ExposedCold = flags2.HasFlag(StatusFlags2.Cold);
+        this.ExposedHot = flags2.HasFlag(StatusFlags2.Hot);
+        this.ExposedVeryCold = flags2.HasFlag(StatusFlags2.VeryCold);
+        this.ExposedVeryHot = flags2.HasFlag(StatusFlags2.VeryHot);
+        this.ExposedGlideMode = flags2.HasFlag(StatusFlags2.GlideMode);
+        this.ExposedOnFootInHangar = flags2.HasFlag(StatusFlags2.OnFootInHangar);
+        this.ExposedOnFootSocialSpace = flags2.HasFlag(StatusFlags2.OnFootSocialSpace);
+        this.ExposedOnFootExterior = flags2.HasFlag(StatusFlags2.OnFootExterior);
+        this.ExposedBreathableAtmosphere = flags2.HasFlag(StatusFlags2.BreathableAtmosphere);
+        this.ExposedTelepresenceMultiCrew = flags2.HasFlag(StatusFlags2.TelepresenceMultiCrew);
+        this.ExposedPhysicalMultiCrew = flags2.HasFlag(StatusFlags2.PhysicalMultiCrew);
+        this.ExposedFSDHyperdriveCharging = flags2.HasFlag(StatusFlags2.FSDHyperdriveCharging);
+        this.ExposedSupercruiseOverdrive = flags2.HasFlag(StatusFlags2.SupercruiseOverdrive);
+        this.ExposedSupercruiseAssist = flags2.HasFlag(StatusFlags2.SupercruiseAssist);
+        this.ExposedNPCCrewActive = flags2.HasFlag(StatusFlags2.NPCCrewActive);
     }
 
-    public void parseVariables ()
+    public void ParseVariables ()
     {
         // Simple variables
         this.ExposedFireGroup = this.FireGroup.GetValueOrDefault(0);
@@ -153,6 +220,20 @@ public class EliteStatusFile
         this.ExposedCargo = this.Cargo.GetValueOrDefault(0);
         this.ExposedBalance = this.Balance.GetValueOrDefault(0);
         this.ExposedLegalState = this.LegalState != null ? this.LegalState : "";
+        this.ExposedLatitude = this.Latitude.GetValueOrDefault(0);
+        this.ExposedLongitude = this.Longitude.GetValueOrDefault(0);
+        this.ExposedAltitude = this.Altitude.GetValueOrDefault(0);
+        this.ExposedOxygen = this.Oxygen.GetValueOrDefault(0);
+        this.ExposedHealth = this.Health.GetValueOrDefault(0);
+        this.ExposedTemperature = this.Temperature.GetValueOrDefault(0);
+        this.ExposedGravity = this.Gravity.GetValueOrDefault(0);
+        this.ExposedSelectedWeapon = this.SelectedWeapon != null ? this.SelectedWeapon : "";
+        this.ExposedSelectedWeaponLocalised = this.SelectedWeaponLocalised != null ? this.SelectedWeaponLocalised : "";
+        this.ExposedBodyName = this.BodyName != null ? this.BodyName : "";
+        this.ExposedPlanetRadius = this.PlanetRadius.GetValueOrDefault(0);
+
+        // on foot the game reports -180 to 180, in a ship 0 to 359 - always report 0 to 359
+        this.ExposedHeading = ((this.Heading.GetValueOrDefault(0) % 360) + 360) % 360;
 
         // Variables that need parsing
         if (this.Pips != null && this.Pips.Count == 3) {
@@ -187,23 +268,33 @@ public class EliteStatusFile
             {
                 this.ExposedDestinationName = this.Destination["Name"];
             }
-        }
-    }
-
-    public void updateAllIntProperties (IStatusTranslator statusTranslator)
-    {
-        // only update if the game is running
-        if (this.ExposedGameStarted)
-        {
-            PropertyInfo[] properties = typeof(EliteStatusFile).GetProperties();
-            foreach (PropertyInfo property in properties)
+            if (this.Destination.ContainsKey("Name_Localised"))
             {
-                // currently simply use all the ints available
-                if (property.Name.StartsWith("Exposed"))
-                {
-                    statusTranslator.FromStatusFile(property.Name.Remove(0,7), property.GetValue(this, null));
-                }
+                this.ExposedDestinationNameLocalised = this.Destination["Name_Localised"];
             }
         }
     }
+
+    /// <summary>
+    /// Sends every exposed value to ViLA. The translator drops the ones that did not change.
+    /// </summary>
+    public void SendExposedValues (IStatusTranslator statusTranslator)
+    {
+        // Always sent, even with the game closed: it is the only way a configuration can react to
+        // the game not running at all.
+        statusTranslator.FromStatusFile(GameStartedId, this.ExposedGameStarted);
+
+        // Everything else says nothing about the game once it is closed, the values are simply 0.
+        if (!this.ExposedGameStarted)
+        {
+            return;
+        }
+
+        foreach ((string id, PropertyInfo property) in ExposedProperties)
+        {
+            statusTranslator.FromStatusFile(id, property.GetValue(this, null));
+        }
+    }
+
+    private static string IdFor (string propertyName) => propertyName.Substring(ExposedPrefix.Length);
 }

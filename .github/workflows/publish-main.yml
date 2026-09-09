@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
       - name: Publish
         run: cd ViLAElitePlugin && dotnet publish -c Release --manifest plugin_manifest.xml -p:DebugType=None -o publish/ViLAElitePlugin
       - name: Zip Folder
