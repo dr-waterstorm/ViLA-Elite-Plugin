@@ -261,5 +261,36 @@ dotnet test
 
 `dotnet test` runs the unit tests in `ViLAElitePluginTests`. They parse a set of `Status.json`
 samples and check what the plugin would send to ViLA, including the values that do not fit into a
-32 bit int (`Balance`, `Altitude`) and the `Flags` bit 31. A release build is published by the
-GitHub action on every push to `main`.
+32 bit int (`Balance`, `Altitude`) and the `Flags` bit 31.
+
+### Releasing
+
+Bump `"version"` in `ViLAElitePlugin/manifest.json` and push to `main`. The GitHub action builds,
+tests and packs the plugin and creates a release tagged with exactly that version - ViLA only
+recognizes a plugin update when the release tag parses as a version number, and it compares it
+against the `version` from the installed `manifest.json`. If a release for that version already
+exists, the action publishes nothing and says so in the run summary.
+
+### Dependencies
+
+The plugin targets **net6.0 on purpose**: ViLA is a net6.0 executable and loads the plugin into its
+own process, so a newer target framework cannot be loaded. `Newtonsoft.Json` stays on the version
+`plugin_manifest.xml` declares as provided by ViLA - that is what keeps it out of the release zip.
+Both should only move when ViLA itself moves. `ViLA.PluginBase` is on the latest published version.
+
+### How ViLA handles what the plugin sends
+
+Useful to know before changing the sending side, all of it from
+[ViLA's source](https://github.com/charliefoxtwo/ViLA):
+
+- ViLA keeps **one** state dictionary for all of its plugins, keyed by variable name, and it is not
+  synchronized - so this plugin parses one status file at a time and never calls `ClearState`,
+  which would drop the other plugins' values too.
+- Values are read back with a cast to whatever type the configured condition needs. Sending a type
+  that cannot be converted only fails inside ViLA, when somebody uses that variable - hence the
+  type tests in `ViLAElitePluginTests/ViLaCompatibilityTests.cs`.
+- ViLA writes to the device for every value it receives, whether it changed or not, and it writes
+  nothing for a condition that stops matching. That is why the plugin filters out unchanged values
+  and why an LED keeps its color until some condition matches again.
+- A whole number in a configuration is read as a 32 bit int, and a value that does not fit makes
+  ViLA discard the whole configuration file with only a warning.

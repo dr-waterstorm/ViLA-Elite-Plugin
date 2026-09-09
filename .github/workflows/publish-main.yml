@@ -4,32 +4,74 @@ on:
   push:
     branches: [ main ]
 
+# two pushes in quick succession must not race each other into the same release
+concurrency:
+  group: publish-main
+  cancel-in-progress: false
+
 jobs:
-  build:
+  publish:
 
     runs-on: ubuntu-latest
 
+    # gh release create needs to write tags and releases
+    permissions:
+      contents: write
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
+
       - name: Set up .NET 6
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 6.0.404
+          dotnet-version: 6.0.x
+
+      # the version ViLA compares against when it looks for plugin updates
+      - name: Read the plugin version
+        id: plugin
+        run: echo "version=$(jq -er .version ViLAElitePlugin/manifest.json)" >> "$GITHUB_OUTPUT"
+
       - name: Install dependencies
         run: dotnet restore
+
       - name: Build
         run: dotnet build --configuration Release --no-restore
+
       - name: Test
         run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
+
+      # --no-build so the release contains exactly the binaries the tests ran against
       - name: Publish
-        run: cd ViLAElitePlugin && dotnet publish -c Release --manifest plugin_manifest.xml -p:DebugType=None -o publish/ViLAElitePlugin
+        run: dotnet publish ViLAElitePlugin --configuration Release --no-restore --no-build --manifest ViLAElitePlugin/plugin_manifest.xml -p:DebugType=None -o publish/ViLAElitePlugin
+
       - name: Zip Folder
-        run: cd ViLAElitePlugin/publish && zip -r ViLAElitePlugin.zip .
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: "Latest Official Release"
-          files: |
-            **/ViLAElitePlugin.zip
+        run: cd publish && zip -r ../ViLAElitePlugin.zip .
+
+      # the zip is what people unpack into ViLA's Plugins folder - make sure it is not empty or
+      # missing the manifest before it gets published
+      - name: Check the package
+        run: |
+          unzip -l ViLAElitePlugin.zip
+          unzip -l ViLAElitePlugin.zip | grep -q 'ViLAElitePlugin/ViLAElitePlugin.dll'
+          unzip -l ViLAElitePlugin.zip | grep -q 'ViLAElitePlugin/manifest.json'
+
+      # Tag and title are the bare version, like the releases before this workflow existed. ViLA
+      # only recognizes a release whose tag or name parses as a version number
+      # (Program.CheckVersionAgainstGithub), so a tag like "latest" or "v1.1.0" would be ignored
+      # and nobody would ever be told about an update.
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.plugin.outputs.version }}
+        run: |
+          if gh release view "$VERSION" > /dev/null 2>&1; then
+            echo "::warning::Release $VERSION already exists, nothing published. Bump \"version\" in ViLAElitePlugin/manifest.json to release."
+            exit 0
+          fi
+
+          gh release create "$VERSION" \
+            --title "$VERSION" \
+            --target "$GITHUB_SHA" \
+            --latest \
+            --generate-notes \
+            ViLAElitePlugin.zip
